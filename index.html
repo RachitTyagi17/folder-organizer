@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Folder Organizer</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 50px;
+      background: #f5f5f5;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h2>📁 Folder Organizer</h2>
+  <label for="folderPath">Enter folder path:</label><br />
+  <input type="text" id="folderPath" size="60" placeholder="e.g. C:/Users/you/Desktop/myfolder" />
+  <br />
+  <button onclick="organizeFolder()">Organize</button>
+  <p id="status"></p>
+
+  <script>
+    async function organizeFolder() {
+      const folderPath = document.getElementById('folderPath').value;
+      const status = document.getElementById('status');
+
+      if (!folderPath) {
+        status.textContent = '❗ Please enter a folder path.';
+        return;
+      }
+
+      status.textContent = '⏳ Organizing...';
+
+      const response = await fetch('/organize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ folderPath })
+      });
+
+      const result = await response.json();
+      status.textContent = result.message;
+    }
+  </script>
+</body>
+</html>
