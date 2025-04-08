@@ -3,16 +3,20 @@ import fs from 'fs';
 import path from 'path';
 import { moveFile } from 'move-file';
 import bodyParser from 'body-parser';
+import { fileURLToPath } from 'url';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Needed for __dirname with ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-
-
+// Serve frontend from /public
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
-app.use(express.static('.')); // Serve index.html from current folder
 
+// API route to organize files
 app.post('/organize', async (req, res) => {
   const folderPath = req.body.folderPath;
 
@@ -43,6 +47,11 @@ app.post('/organize', async (req, res) => {
   }
 
   res.json({ message: '✅ Folder organized successfully!' });
+});
+
+// Fallback to index.html for any route
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 app.listen(PORT, () => {
