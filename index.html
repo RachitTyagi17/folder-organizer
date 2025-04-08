@@ -2,27 +2,68 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Folder Organizer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📁 Folder Organizer</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
   <style>
     body {
-      font-family: sans-serif;
-      margin: 50px;
-      background: #f5f5f5;
+      background: #f2f4f8;
+      font-family: 'Segoe UI', sans-serif;
     }
-    input, button {
-      padding: 10px;
-      font-size: 16px;
-      margin: 10px 0;
+    .container {
+      max-width: 600px;
+      margin-top: 60px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      padding: 40px;
+    }
+    .btn-organize {
+      width: 100%;
+    }
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+    }
+    .links a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #0077b5;
+    }
+    .status {
+      margin-top: 20px;
+      font-weight: 500;
     }
   </style>
 </head>
 <body>
-  <h2>📁 Folder Organizer</h2>
-  <label for="folderPath">Enter folder path:</label><br />
-  <input type="text" id="folderPath" size="60" placeholder="e.g. C:/Users/you/Desktop/myfolder" />
-  <br />
-  <button onclick="organizeFolder()">Organize</button>
-  <p id="status"></p>
+
+  <div class="container text-center">
+    <h2 class="mb-4">📁 Folder Organizer</h2>
+    <p class="text-muted">Organize your folder by file type with one click!</p>
+    
+    <input type="text" id="folderPath" class="form-control mb-3" placeholder="Enter full folder path..." />
+    
+    <button class="btn btn-primary btn-organize" onclick="organizeFolder()">Organize</button>
+    
+    <p class="status text-success" id="status"></p>
+
+    <hr class="my-4" />
+    <div class="text-start">
+      <h5>👨‍💻 About Us</h5>
+      <p>Hi! I'm Rachit Tyagi, a passionate developer creating useful tools for everyday problems. This project is part of my learning journey and contribution to the dev community.</p>
+      <div class="links">
+        <a href="https://www.linkedin.com/in/rachittyagi17/" target="_blank">🔗 LinkedIn</a> |
+        <a href="https://github.com/RachitTyagi17/folder-organizer" target="_blank">🌐 Open Source on GitHub</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Made with ❤️ by Rachit | Open source on <a href="https://github.com/RachitTyagi17/folder-organizer" target="_blank">GitHub</a>
+  </div>
 
   <script>
     async function organizeFolder() {
@@ -30,11 +71,13 @@
       const status = document.getElementById('status');
 
       if (!folderPath) {
-        status.textContent = '❗ Please enter a folder path.';
+        status.textContent = '⚠️ Please enter a valid folder path.';
+        status.classList.replace('text-success', 'text-danger');
         return;
       }
 
       status.textContent = '⏳ Organizing...';
+      status.classList.replace('text-danger', 'text-success');
 
       const response = await fetch('/organize', {
         method: 'POST',
@@ -46,5 +89,6 @@
       status.textContent = result.message;
     }
   </script>
+
 </body>
 </html>
