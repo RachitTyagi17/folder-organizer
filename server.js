@@ -5,7 +5,10 @@ import { moveFile } from 'move-file';
 import bodyParser from 'body-parser';
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
+
+
 
 app.use(bodyParser.json());
 app.use(express.static('.')); // Serve index.html from current folder
@@ -43,5 +46,5 @@ app.post('/organize', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
